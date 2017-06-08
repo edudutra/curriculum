@@ -95,7 +95,7 @@
 
 
   <?php
-/*$connectstr_dbhost = 'mysql4.gear.host';
+$connectstr_dbhost = 'mysql4.gear.host';
 $connectstr_dbname = 'kimai';
 $connectstr_dbusername = 'kimai';
 $connectstr_dbpassword = 'Gp9RlwKDb~C!';
@@ -122,8 +122,8 @@ if (!$db) {
     exit;
 }
 
-echo "Success: A proper connection to MySQL was made! The my_db database is great." . PHP_EOL;
-echo "Host information: " . mysqli_get_host_info($db) . PHP_EOL;
+// echo "Success: A proper connection to MySQL was made! The my_db database is great." . PHP_EOL;
+// echo "Host information: " . mysqli_get_host_info($db) . PHP_EOL;
 
 
 
@@ -139,7 +139,7 @@ $db->query($sql);
 
 //$db->query("insert into pessoa (nome) values ('Daniela Monteiro');");
 
-?>
+/*?>
     <table>
       <th>
         <td>Id</td>
@@ -159,10 +159,10 @@ while ($dados = mysqli_fetch_array($query)) {
 ?>
             <table>
               <?
-echo '<p>Registros encontrados: ' . $query->num_rows . '</p>';
+echo '<p>Registros encontrados: ' . $query->num_rows . '</p>';*/
 
 
-mysqli_close($db);*/
+mysqli_close($db);
 
  ?>
 
