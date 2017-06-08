@@ -1,3 +1,73 @@
+  <?php
+$connectstr_dbhost = 'mysql4.gear.host';
+$connectstr_dbname = 'kimai';
+$connectstr_dbusername = 'kimai';
+$connectstr_dbpassword = 'Gp9RlwKDb~C!';
+
+foreach ($_SERVER as $key => $value) {
+    if (strpos($key, "MYSQLCONNSTR_localdb") !== 0) {
+        continue;
+    }
+    
+    $connectstr_dbhost = preg_replace("/^.*Data Source=(.+?);.*$/", "\\1", $value);
+    $connectstr_dbname = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $value);
+    $connectstr_dbusername = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $value);
+    $connectstr_dbpassword = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
+
+}
+
+$db = new mysqli($connectstr_dbhost, $connectstr_dbusername, $connectstr_dbpassword,$connectstr_dbname);
+
+
+if (!$db) {
+    echo "Error: Unable to connect to MySQL." . PHP_EOL;
+    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+    echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
+    exit;
+}
+
+
+$sql = "create table if not exists pessoa (
+    id int not null auto_increment,
+    nome varchar(200) not null, 
+    primary key(id)
+);";
+
+$db->query($sql);
+
+$sql = "create table if not exists secao (
+    id int not null auto_increment,
+    nome varchar(200) not null, 
+    apelido varchar(20) not null,
+    primary key(id)
+);";
+
+$db->query($sql);
+
+
+//$db->query("insert into pessoa (nome) values ('Daniela Monteiro');");
+
+// $db->query("insert into secao (nome, apelido) values ('Formação Acadêmica', 'Formação');");
+// $db->query("insert into secao (nome, apelido) values ('Resumo das Qualificações', 'Resumo');");
+// $db->query("insert into secao (nome, apelido) values ('Experiência Profissional', 'Experiência');");
+// $db->query("insert into secao (nome, apelido) values ('Conhecimentos', 'Conhecimentos');");
+
+
+$sql = "SELECT id, nome FROM pessoa WHERE id = 1";
+$query = $db->query($sql);
+
+$pessoa = mysqli_fetch_array($query);
+
+$sql = "SELECT id, nome, apelido FROM secao";
+$query_secoes = $db->query($sql);
+
+$i = 0;
+while($secao = mysqli_fetch_array($query_secoes)) {
+  $secoes[$i] = $secao;
+  $i++;
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,6 +112,12 @@
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
           <li class="active"><a href="#">Home</a></li>>
+<?php
+  #while($secao = mysqli_fetch_array($query_secoes)) {
+  foreach($secoes as $secao) {
+    echo '<li><a href="#' . $secao["apelido"] . '">' . $secao["apelido"] . '</a></li>';
+  }
+?>
           <li><a href="#contact">Contato</a></li>
         </ul>
       </div>
@@ -52,125 +128,35 @@
   <div class="container theme-showcase" role="main">
     <!-- Main jumbotron for a primary marketing message or call to action -->
 
-    <div class="starter-template" id="contact">
+    <div >
 
-      <h1>Eduardo Maciel Dutra</h1>
+      <h1><?=$pessoa["nome"]?></h1>
       <p class="lead">Analista de Sistemas</p>
     </div>
 
-    <div class="page-header">
-      <h1>Formação Acadêmica</h1>
-    </div>
+<?php
+  #while($secao = mysqli_fetch_array($query_secoes)) {
+  foreach($secoes as $secao) {
+    echo '<div class="page-header" id="' . $secao["apelido"] . '">';
+    echo '<h1>' .  $secao["nome"] . '</h1>';
+    echo '</div>';
+  }
+?>
 
-    <div class="page-header">
-      <h1>Formação Acadêmica</h1>
-    </div>
-
-    <div class="page-header">
-      <h1>Experiência</h1>
-    </div>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Habib's</h3>
-      </div>
-      <div class="panel-body">
-        Panel content
-      </div>
-    </div>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Banco Itaú</h3>
-      </div>
-      <div class="panel-body">
-        Panel content
-      </div>
-    </div>
-
-    <div class="page-header">
-      <h1>Formação Acadêmica</h1>
-    </div>
 
   </div>
   <!-- /.container -->
 
 
-  <?php
-$connectstr_dbhost = 'mysql4.gear.host';
-$connectstr_dbname = 'kimai';
-$connectstr_dbusername = 'kimai';
-$connectstr_dbpassword = 'Gp9RlwKDb~C!';
-
-foreach ($_SERVER as $key => $value) {
-    if (strpos($key, "MYSQLCONNSTR_localdb") !== 0) {
-        continue;
-    }
-    
-    $connectstr_dbhost = preg_replace("/^.*Data Source=(.+?);.*$/", "\\1", $value);
-    $connectstr_dbname = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $value);
-    $connectstr_dbusername = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $value);
-    $connectstr_dbpassword = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
-
-}
-
-$db = new mysqli($connectstr_dbhost, $connectstr_dbusername, $connectstr_dbpassword,$connectstr_dbname);
-
-
-if (!$db) {
-    echo "Error: Unable to connect to MySQL." . PHP_EOL;
-    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
-    echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
-    exit;
-}
-
-// echo "Success: A proper connection to MySQL was made! The my_db database is great." . PHP_EOL;
-// echo "Host information: " . mysqli_get_host_info($db) . PHP_EOL;
-
-
-
-$sql = "create table if not exists pessoa (
-    id int not null auto_increment,
-    nome varchar(200) not null, 
-    primary key(id)
-);";
-
-$db->query($sql);
-
-//echo 'Registros encontrados: ' . $x->num_rows;
-
-//$db->query("insert into pessoa (nome) values ('Daniela Monteiro');");
-
-/*?>
-    <table>
-      <th>
-        <td>Id</td>
-        <td>Nome</td>
-        <th>
-          <?
-
-// Executa uma consulta que pega cinco notícias
-$sql = "SELECT id, nome FROM pessoa";
-$query = $db->query($sql);
-
-while ($dados = mysqli_fetch_array($query)) {
-  echo '<tr><td>' . $dados['id'] . '</td>';
-  echo '<td>' . $dados['nome'] . '</td></tr>';
-}
-
-?>
-            <table>
-              <?
-echo '<p>Registros encontrados: ' . $query->num_rows . '</p>';*/
-
-
+<?php
 mysqli_close($db);
+?>
 
- ?>
 
-
-                <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-                <script src="jquery.min.js"></script>
-                <!-- Include all compiled plugins (below), or include individual files as needed -->
-                <script src="bootstrap.min.js"></script>
-</body>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="bootstrap.min.js"></script>
+  </body>
 
 </html>
