@@ -45,12 +45,33 @@ $sql = "create table if not exists secao (
 $db->query($sql);
 
 
-//$db->query("insert into pessoa (nome) values ('Daniela Monteiro');");
+$db->query("insert into pessoa (nome) 
+select * from (select 'Eduardo Maciel Dutra') as tmp
+where not exists(
+    select nome from pessoa where nome = 'Eduardo Maciel Dutra'
+);
+");
 
-// $db->query("insert into secao (nome, apelido) values ('Formação Acadêmica', 'Formação');");
-// $db->query("insert into secao (nome, apelido) values ('Resumo das Qualificações', 'Resumo');");
-// $db->query("insert into secao (nome, apelido) values ('Experiência Profissional', 'Experiência');");
-// $db->query("insert into secao (nome, apelido) values ('Conhecimentos', 'Conhecimentos');");
+$db->query("insert into secao (nome, apelido) 
+select * from (select 'Formação Acadêmica', 'Formação') as tmp
+where not exists(
+    select nome from secao where nome = 'Formação Acadêmica'
+);");
+$db->query("insert into secao (nome, apelido) 
+select * from (select 'Resumo das Qualificações', 'Resumo') as tmp
+where not exists(
+    select nome from secao where nome = 'Resumo das Qualificações'
+);");
+$db->query("insert into secao (nome, apelido) 
+select * from (select 'Experiência Profissional', 'Experiência') as tmp
+where not exists(
+    select nome from secao where nome = 'Experiência Profissional
+);");
+$db->query("insert into secao (nome, apelido) 
+select * from (select 'Conhecimentos, 'Conhecimentos') as tmp
+where not exists(
+    select nome from secao where nome = 'Conhecimentos'
+);");
 
 
 $sql = "SELECT id, nome FROM pessoa WHERE id = 1";
