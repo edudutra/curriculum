@@ -68,7 +68,7 @@ where not exists(
     select nome from secao where nome = 'Experiência Profissional'
 );");
 $db->query("insert into secao (nome, apelido) 
-select * from (select 'Conhecimentos', 'Conhecimentos') as tmp
+select * from (select 'Conhecimentos', 'Conhecimentos' as ap) as tmp
 where not exists(
     select nome from secao where nome = 'Conhecimentos'
 );");
